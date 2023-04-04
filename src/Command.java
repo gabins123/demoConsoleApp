@@ -1,16 +1,20 @@
+import demoConsoleApp.Utility.Action;
+import demoConsoleApp.Utility.Action1;
+import demoConsoleApp.Utility.Func;
+
 public class Command {
-    private final String command;
+    protected final String command;
     private final int index;
-    private final Func handle;
+    private final Action handle;
 
     public int getIndex() {
         return index;
     }
 
-    public Command(int index, String command, Func delagation) {
+    public Command(int index, String command, Action handle) {
         this.command = command;
         this.index = index;
-        this.handle = delagation;
+        this.handle = handle;
     }
 
     @Override
