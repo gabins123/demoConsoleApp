@@ -1,4 +1,4 @@
-package demoConsoleApp.Utility;
+package demoConsoleApp.Utility.Delegate;
 
 public interface Action {
     void Invoke();

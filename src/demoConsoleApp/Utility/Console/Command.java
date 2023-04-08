@@ -1,6 +1,6 @@
-import demoConsoleApp.Utility.Action;
-import demoConsoleApp.Utility.Action1;
-import demoConsoleApp.Utility.Func;
+package demoConsoleApp.Utility.Console;
+
+import demoConsoleApp.Utility.Delegate.Action;
 
 public class Command {
     protected final String command;

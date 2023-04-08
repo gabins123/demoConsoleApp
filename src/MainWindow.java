@@ -1,4 +1,6 @@
 import demoConsoleApp.Core.InputHandler;
+import demoConsoleApp.Utility.Console.Command;
+import demoConsoleApp.Utility.Console.ConsoleWindow;
 
 import java.util.ArrayList;
 

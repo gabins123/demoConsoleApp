@@ -1,7 +1,7 @@
 package demoConsoleApp.Utility.Console;
 
 import demoConsoleApp.Core.InputHandler;
-import demoConsoleApp.Utility.Func1;
+import demoConsoleApp.Utility.Delegate.Func1;
 
 public class ConsoleActionHandler<T> {
     private final Func1<T,String> handler;

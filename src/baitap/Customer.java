@@ -84,7 +84,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "demoConsoleApp.Core.Data.Customer{" +
                 "ten='" + ten + '\'' +
                 ", gioiTinh='" + gioiTinh + '\'' +
                 ", ngaySinh=" + ngaySinh +

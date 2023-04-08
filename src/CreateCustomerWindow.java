@@ -1,20 +1,20 @@
+import demoConsoleApp.Core.Data.Customer;
+import demoConsoleApp.Core.Data.DataAPI;
 import demoConsoleApp.Utility.Console.ConsoleActionHandler;
-import demoConsoleApp.Utility.Console.ConsoleUtility;
+import demoConsoleApp.Utility.Console.ConsoleWindow;
 import demoConsoleApp.Utility.DateTimeUtility;
 import demoConsoleApp.Utility.StringUtility;
 
-import java.io.Console;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
-public class CreateCustomerWindow extends ConsoleWindow{
+public class CreateCustomerWindow extends ConsoleWindow {
 
     public CreateCustomerWindow() {
     }
     @Override
     public void onDraw() {
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         Customer customer = new Customer();
 
         ShowSignInForm(customer);
@@ -24,7 +24,7 @@ public class CreateCustomerWindow extends ConsoleWindow{
             return;
         }
         customer.setFullName(stringValue);
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
 
         stringValue = handleSex();
@@ -33,7 +33,7 @@ public class CreateCustomerWindow extends ConsoleWindow{
             return;
         }
         customer.setSex(stringValue);
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
 
         stringValue = handlHomeTown();
@@ -42,7 +42,7 @@ public class CreateCustomerWindow extends ConsoleWindow{
             return;
         }
         customer.setHomeTown(stringValue);
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
 
 
@@ -53,7 +53,7 @@ public class CreateCustomerWindow extends ConsoleWindow{
             return;
         }
         customer.setCiC(cic);
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
 
 
@@ -64,16 +64,17 @@ public class CreateCustomerWindow extends ConsoleWindow{
         }
         customer.setBirthDate(bd);
 
-        ConsoleUtility.clearConsole();
+        //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
 
         var handler = new ConsoleActionHandler<>(String::toUpperCase, "Confirm lại thông tin 1 lần nữa! (Y/N)?", "Chỉ được nhập Y/N", "exit", false);
         var confirming = handler.handle((e)-> e.equalsIgnoreCase("y") || e.equalsIgnoreCase("n"));
         if(confirming.equals("Y")){
             System.out.println("Đăng ký thành công!");
-            customer.generateId();
-            //TODO: Them vao database, tang so thu tu, tu dong dang nhap
-            System.out.println(customer.getId());
+            if(!DataAPI.tryAddCustomer(customer))
+            {
+                //TODO: Do something
+            }
             Main.SwitchWindows(WindowType.Home, null);
         }
         else{

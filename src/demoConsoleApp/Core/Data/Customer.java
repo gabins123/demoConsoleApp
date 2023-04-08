@@ -1,3 +1,5 @@
+package demoConsoleApp.Core.Data;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,12 +17,12 @@ public class Customer {
     public Date getBirthDate() {return birthDate;}
     public String getHomeTown() {return homeTown;}
     public long getCiC() {return ciC;}
-    public void generateId() {
+    public void generateId(long order) {
         String pattern = "ddMMyyyy";
         var date = new SimpleDateFormat(pattern);
 
         //TODO: Them so thu tu
-        id = date.format(new Date());
+        id = date.format(new Date()) + order;
     }
     public void setFullName(String value) { fullName = value;}
     public void setSex(String value) { sex = value;}

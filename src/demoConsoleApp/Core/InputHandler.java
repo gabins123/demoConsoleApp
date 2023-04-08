@@ -1,8 +1,8 @@
 package demoConsoleApp.Core;
 
-import demoConsoleApp.Utility.Action;
-import demoConsoleApp.Utility.Action1;
-import demoConsoleApp.Utility.Func;
+import demoConsoleApp.Utility.Delegate.Action;
+import demoConsoleApp.Utility.Delegate.Action1;
+import demoConsoleApp.Utility.Delegate.Func;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

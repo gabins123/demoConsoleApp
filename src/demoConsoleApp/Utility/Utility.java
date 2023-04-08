@@ -1,4 +1,6 @@
-import demoConsoleApp.Utility.Func;
+package demoConsoleApp.Utility;
+
+import demoConsoleApp.Utility.Delegate.Func;
 
 public class Utility {
     public static int tryParseInt(String value, Func<Integer> callback){

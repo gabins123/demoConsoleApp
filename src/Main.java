@@ -1,8 +1,7 @@
-import demoConsoleApp.Utility.Action;
-import demoConsoleApp.Utility.Func;
+import demoConsoleApp.Utility.Delegate.Action;
+import demoConsoleApp.Utility.Console.ConsoleWindow;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     private static Map<WindowType, ConsoleWindow> views = null;
