@@ -17,16 +17,16 @@ public class DataAPI {
             return false;
         }
         customer.generateId(cccds.size());
-        return api.addCustomer(customer);
+        return api.set(DataPath.CUSTOMER_PATH, customer);
     }
-    public static boolean tryAddAccount(Account account){
-        var accounts= api.load(DataPath.ACCOUNT_PATH, Account.class);
-        List<String> usernames = accounts.stream().map(Account::getUsername).toList();
-        List<String> cccds = accounts.stream().map(Account::getCustomerCCCD).toList();
-        if (usernames.contains(account.getUsername()) && !cccds.contains(account.getCustomerCCCD())){
-            System.out.println("Username or cccd is duplicated !!");
-            return false;
-        }
-        return api.addAccount(account);
-    }
+//    public static boolean tryAddAccount(Account account){
+//        var accounts= api.load(DataPath.ACCOUNT_PATH, Account.class);
+//        List<String> usernames = accounts.stream().map(Account::getUsername).toList();
+//        List<String> cccds = accounts.stream().map(Account::getCustomerCCCD).toList();
+//        if (usernames.contains(account.getUsername()) && !cccds.contains(account.getCustomerCCCD())){
+//            System.out.println("Username or cccd is duplicated !!");
+//            return false;
+//        }
+//        return api.addAccount(account);
+//    }
 }

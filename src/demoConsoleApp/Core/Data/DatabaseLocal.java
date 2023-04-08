@@ -19,22 +19,11 @@ public class DatabaseLocal {
             return new ArrayList<>();
         }
     }
-
-    public boolean addCustomer(Customer customer) {
-        var saver = new DataSaver<Customer>();
+    public <T> boolean set(String path,T data)
+    {
+        var saver = new DataSaver<T>();
         try {
-            saver.save(DataPath.CUSTOMER_PATH,customer);
-            return true;
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean addAccount(Account account)  {
-        var saver = new DataSaver<Account>();
-        try {
-            saver.save(DataPath.ACCOUNT_PATH,account);
+            saver.save(path,data);
             return true;
         } catch (IOException e) {
             System.out.println(e.getMessage());
