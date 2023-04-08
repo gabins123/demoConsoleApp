@@ -1,4 +1,5 @@
 import demoConsoleApp.Utility.Action;
+import demoConsoleApp.Utility.Func;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ public class Main {
     }
     public static void SwitchWindows(WindowType type, Action callback){
         if(views.containsKey(type)){
-            views.get(type).OnDraw();
+            views.get(type).onDraw();
             if(callback != null)
                 callback.Invoke();
             return;

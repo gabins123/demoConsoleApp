@@ -18,7 +18,7 @@ public class InputHandler {
         }
         catch(InputMismatchException exception)
         {
-            handler.Invoke(OnHandleFail.Invoke());
+            handler.Invoke(OnHandleFail.invoke());
         }
     }
     public static void handle(String title, Action1<String> handler, Func<String> OnHandleFail){
@@ -30,7 +30,7 @@ public class InputHandler {
         }
         catch(InputMismatchException exception)
         {
-            handler.Invoke(OnHandleFail.Invoke());
+            handler.Invoke(OnHandleFail.invoke());
         }
     }
     public static String getInput(String title, Action onHandleFail){

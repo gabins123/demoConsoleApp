@@ -20,7 +20,7 @@ public class MainWindow extends ConsoleWindow {
         }));
     }
     @Override
-    public void OnDraw() {
+    public void onDraw() {
         for (Command command : commands) {
             System.out.println(command.toString());
         }
@@ -29,13 +29,13 @@ public class MainWindow extends ConsoleWindow {
     public void ProcessInput(int value) {
         if(value == -1) {
             System.out.println("Wrong input");
-            OnDraw();
+            onDraw();
             return;
         }
         var commandIndex = commands.stream().filter(e->e.getIndex() == value).findAny().orElse(null);
         if(commandIndex == null){
             System.out.println("Wrong input");
-            OnDraw();
+            onDraw();
             return;
         }
         commandIndex.Handle();

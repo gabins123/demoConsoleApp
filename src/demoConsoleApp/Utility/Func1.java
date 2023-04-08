@@ -1,5 +1,5 @@
 package demoConsoleApp.Utility;
 
 public interface Func1<T, T2> {
-    T Invoke(T2 param);
+    T invoke (T2 param) throws Exception;
 }

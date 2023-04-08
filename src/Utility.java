@@ -5,7 +5,7 @@ public class Utility {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
-            return callback.Invoke();
+            return callback.invoke();
         }
     }
 }
