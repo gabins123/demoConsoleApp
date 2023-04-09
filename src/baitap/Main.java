@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws IOException, ParseException {
-//        MainWindow test = new MainWindow();
+//        demoConsoleApp.Window.MainWindow test = new demoConsoleApp.Window.MainWindow();
 //        test.OnDraw();
 //
         LoaiKyHan loaiKyHan1 = new LoaiKyHan(7,2);

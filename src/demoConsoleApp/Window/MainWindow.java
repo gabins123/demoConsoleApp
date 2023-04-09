@@ -1,4 +1,7 @@
+package demoConsoleApp.Window;
+
 import demoConsoleApp.Core.InputHandler;
+import demoConsoleApp.Main;
 import demoConsoleApp.Utility.Console.Command;
 import demoConsoleApp.Utility.Console.ConsoleWindow;
 
@@ -12,11 +15,11 @@ public class MainWindow extends ConsoleWindow {
         {
             Main.SwitchWindows(WindowType.CreateAccount, null);
         }));
-        commands.add(new Command(1,"Đăng nhập", () ->
+        commands.add(new Command(2,"Đăng nhập", () ->
         {
-            System.out.println("Handle Đăng nhập");
+            Main.SwitchWindows(WindowType.SignIn, null);
         }));
-        commands.add(new Command(1,"Tra cứu", () ->
+        commands.add(new Command(3,"Tra cứu", () ->
         {
             System.out.println("Handle tra cứu");
         }));

@@ -1,1 +1,1 @@
-dahsdjkakdak,dahsdjkakdak,Thu Apr 06 18:43:11 GMT+07:00 2023,dahsdjkakdak,dahsdjkakdak,56.0,null
+{"id":"090420230","fullName":"hai","sex":"NAM","birthDate":"Sep 23, 2000, 12:00:00 AM","homeTown":"hue","ciC":123123123123}

@@ -23,6 +23,28 @@ public class ConsoleActionHandler<T> {
             try{
                 var input = InputHandler.getInput(des, null);
                 assert input != null;
+                if(!exitKey.equals("")   && input.equalsIgnoreCase(exitKey)){
+                    return  null;
+                }
+                var value = handler.invoke(input);
+                if(validation == null || validation.invoke(value)){
+                    return value;
+                }
+                throw new Exception(errorMessage);
+            }
+            catch(Exception e) {
+                System.out.println(e.getMessage());
+                if(isExitWhenFail)
+                   break;
+            }
+        }
+        return null;
+    }
+    public T handle(Func1<Boolean, T> validation, String overrideDes){
+        while(true){
+            try{
+                var input = InputHandler.getInput(overrideDes, null);
+                assert input != null;
                 if(input.equalsIgnoreCase(exitKey)){
                     return  null;
                 }

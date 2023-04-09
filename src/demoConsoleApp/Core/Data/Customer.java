@@ -1,5 +1,8 @@
 package demoConsoleApp.Core.Data;
 
+import demoConsoleApp.Utility.DateTimeUtility;
+import demoConsoleApp.Utility.StringUtility;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +33,15 @@ public class Customer {
     public void setHomeTown(String value) { homeTown = value;}
     public void setCiC(long value) { ciC = value;}
 
-    //SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+    @Override
+    public String toString() {
+        var dots =  "...";
+        return String.format("Họ và tên: %s\nGiới tính : %s\nNgày sinh: %s\nQuê quán: %s\nCCCD: %s",
+                StringUtility.HandleEmptyString(fullName, dots),
+                StringUtility.HandleEmptyString(sex, dots),
+                StringUtility.HandleEmptyString(DateTimeUtility.toDefaultFormat(birthDate), dots),
+                StringUtility.HandleEmptyString(homeTown,dots),
+                (ciC== 0? dots : ciC));
+    }
 
 }

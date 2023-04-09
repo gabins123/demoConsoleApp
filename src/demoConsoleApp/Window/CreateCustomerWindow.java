@@ -1,5 +1,10 @@
+package demoConsoleApp.Window;
+
+import demoConsoleApp.Core.Data.Account;
 import demoConsoleApp.Core.Data.Customer;
 import demoConsoleApp.Core.Data.DataAPI;
+import demoConsoleApp.Core.LoginSession;
+import demoConsoleApp.Main;
 import demoConsoleApp.Utility.Console.ConsoleActionHandler;
 import demoConsoleApp.Utility.Console.ConsoleWindow;
 import demoConsoleApp.Utility.DateTimeUtility;
@@ -14,9 +19,7 @@ public class CreateCustomerWindow extends ConsoleWindow {
     }
     @Override
     public void onDraw() {
-        //ConsoleUtility.clearConsole();
         Customer customer = new Customer();
-
         ShowSignInForm(customer);
         var stringValue = handleName();
         if(stringValue == null){
@@ -35,7 +38,15 @@ public class CreateCustomerWindow extends ConsoleWindow {
         customer.setSex(stringValue);
         //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
+        var cic = handleCic();
+        if(cic == 0){
+            Main.SwitchWindows(WindowType.Home, null);
+            return;
+        }
 
+        customer.setCiC(cic);
+        //ConsoleUtility.clearConsole();
+        ShowSignInForm(customer);
         stringValue = handlHomeTown();
         if(stringValue == null){
             Main.SwitchWindows(WindowType.Home, null);
@@ -44,18 +55,6 @@ public class CreateCustomerWindow extends ConsoleWindow {
         customer.setHomeTown(stringValue);
         //ConsoleUtility.clearConsole();
         ShowSignInForm(customer);
-
-
-
-        var cic = handleCic();
-        if(cic == 0){
-            Main.SwitchWindows(WindowType.Home, null);
-            return;
-        }
-        customer.setCiC(cic);
-        //ConsoleUtility.clearConsole();
-        ShowSignInForm(customer);
-
 
         var bd =handleBirthDate();
         if(bd == null){
@@ -70,10 +69,15 @@ public class CreateCustomerWindow extends ConsoleWindow {
         var handler = new ConsoleActionHandler<>(String::toUpperCase, "Confirm lại thông tin 1 lần nữa! (Y/N)?", "Chỉ được nhập Y/N", "exit", false);
         var confirming = handler.handle((e)-> e.equalsIgnoreCase("y") || e.equalsIgnoreCase("n"));
         if(confirming.equals("Y")){
-            System.out.println("Đăng ký thành công!");
-            if(!DataAPI.tryAddCustomer(customer))
-            {
+            if(!DataAPI.tryAddCustomer(customer))            {
                 //TODO: Do something
+            }
+            else {
+                System.out.println("Đăng ký thành công!");
+                var account =new Account(customer.getId());
+                DataAPI.tryAddAccount(account);
+                LoginSession.getInstance().SignIn(account);
+                Main.SwitchWindows(WindowType.AccountManager, null);
             }
             Main.SwitchWindows(WindowType.Home, null);
         }
@@ -119,13 +123,7 @@ public class CreateCustomerWindow extends ConsoleWindow {
         return handler.handle(null);
     }
     private void ShowSignInForm(Customer currentFormData) {
-        var dots =  "...";
-        System.out.println("Họ và tên: " + StringUtility.HandleEmptyString(currentFormData.getFullName(), dots));
-        System.out.println("Giới tính : " + StringUtility.HandleEmptyString(currentFormData.getSex(), dots));
-        System.out.println("Ngày sinh: " +  StringUtility.HandleEmptyString(DateTimeUtility.toDefaultFormat(currentFormData.getBirthDate()), dots));
-        System.out.println("Quê quán: " +  StringUtility.HandleEmptyString(currentFormData.getHomeTown(),dots));
-        var cic =currentFormData.getCiC();
-        System.out.println("CCCD: " +  (cic == 0? dots : cic));
+        System.out.println(currentFormData.toString());
     }
 
 }

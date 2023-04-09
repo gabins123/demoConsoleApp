@@ -37,7 +37,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "demoConsoleApp.Core.Data.Account{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", customerCCCD='" + customerCCCD + '\'' +

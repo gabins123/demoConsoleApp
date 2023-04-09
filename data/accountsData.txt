@@ -1,1 +1,1 @@
-ac4,ac4,dahsdjkakdak
+{"username":"090420230","password":"314245","balance":50000,"savingAccounts":""}
