@@ -5,6 +5,7 @@ import demoConsoleApp.Core.Data.DataAPI;
 import demoConsoleApp.Core.InputHandler;
 import demoConsoleApp.Core.LoginSession;
 import demoConsoleApp.Main;
+import demoConsoleApp.Utility.Console.ActionResult;
 import demoConsoleApp.Utility.Console.Command;
 import demoConsoleApp.Utility.Console.ConsoleActionHandler;
 import demoConsoleApp.Utility.Console.ConsoleWindow;
@@ -18,9 +19,8 @@ public class SignInWindow extends ConsoleWindow {
     public void onDraw() {
          Func1<Boolean, String> retry = (String des)->{
             var wrongUsernameHandler = new ConsoleActionHandler<>((e) -> e,
-                    des
-                    , "Lua chon khong phu hop", "", true);
-            var value = wrongUsernameHandler.handle((e)->e.equals("1") || e.equals("2") || e.equals("3"));
+                    des, "", true);
+            var value = wrongUsernameHandler.handle((e)->new ActionResult(e.equals("1") || e.equals("2") || e.equals("3"),"Lua chon khong phu hop"));
             if(value.equals("1"))
                 return false;
             if(value.equals("2")){
@@ -31,7 +31,7 @@ public class SignInWindow extends ConsoleWindow {
             return true;
         };
         while(true){
-            var stringHandler = new ConsoleActionHandler<>((e) -> e, "Nhap username: ", "", "exit", true);
+            var stringHandler = new ConsoleActionHandler<>((e) -> e, "Nhap username: ", "exit", true);
             var username = stringHandler.handle(null);
             var password = stringHandler.handle(null, "Nhap password");
 

@@ -5,4 +5,5 @@ public enum WindowType {
     CreateAccount,
     SignIn,
     AccountManager,
+    CreateSavingAccount,
 }

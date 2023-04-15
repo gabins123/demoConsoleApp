@@ -30,4 +30,15 @@ public class DatabaseLocal {
             return false;
         }
     }
+    public <T> boolean set(String path,T data, String key )
+    {
+        var saver = new DataSaver<T>();
+        try {
+            saver.edit(path,data,key);
+            return true;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 }

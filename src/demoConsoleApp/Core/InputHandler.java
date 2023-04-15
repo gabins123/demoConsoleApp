@@ -42,7 +42,7 @@ public class InputHandler {
         catch(InputMismatchException exception)
         {
             if(onHandleFail != null)
-                onHandleFail.Invoke();
+                onHandleFail.invoke();
             return null;
         }
     }

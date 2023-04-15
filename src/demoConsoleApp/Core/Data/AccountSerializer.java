@@ -17,7 +17,7 @@ public class AccountSerializer implements JsonSerializer<Account>, JsonDeseriali
         jsonObject.addProperty("username", account.getUsername());
         jsonObject.addProperty("password", account.getPassword());
         jsonObject.addProperty("balance", account.getDefaultAccount().getBalance());
-        jsonObject.addProperty("savingAccounts", account.getSavingAccounts().stream().map(SavingAccount::getID).collect(Collectors.joining(",")));
+        jsonObject.addProperty("savingAccounts", account.getSavingAccounts().stream().map(SavingAccount::getID).collect(Collectors.joining("-")));
         return jsonObject;
     }
 
@@ -27,7 +27,9 @@ public class AccountSerializer implements JsonSerializer<Account>, JsonDeseriali
         var userName = jsonObject.get("username").getAsString();
         var defaultAccount = new SavingAccount(userName, new BigDecimal(jsonObject.get("balance").getAsString()));
         var termAccounts = new ArrayList<TermSavingAccount>();
-        termAccounts = new ArrayList<>(Arrays.stream(jsonObject.get("savingAccounts").getAsString().split("-")).map(DataAPI::getSavingAccountByID).filter(Objects::nonNull).toList());
+        var sv = jsonObject.get("savingAccounts").getAsString();
+        if(!sv.equals(""))
+            termAccounts = new ArrayList<>(Arrays.stream(sv.split("-")).map(DataAPI::getSavingAccountByID).filter(Objects::nonNull).toList());
         return new Account(
                 userName,
                 jsonObject.get("password").getAsString(),

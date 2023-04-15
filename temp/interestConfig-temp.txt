@@ -1,0 +1,5 @@
+{"id":0,"period":0,"rate":0.002,"calenderType":1}
+{"id":1,"period":7,"rate":0.02,"calenderType":5}
+{"id":2,"period":1,"rate":0.055,"calenderType":2}
+{"id":3,"period":6,"rate":0.075,"calenderType":2}
+{"id":4,"period":1,"rate":0.079,"calenderType":1}

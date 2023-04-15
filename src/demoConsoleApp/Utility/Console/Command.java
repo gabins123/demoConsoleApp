@@ -22,6 +22,6 @@ public class Command {
         return index + ". " + command;
     }
     public void Handle(){
-        handle.Invoke();
+        handle.invoke();
     }
 }

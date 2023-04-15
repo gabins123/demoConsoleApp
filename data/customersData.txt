@@ -1,1 +1,2 @@
-{"id":"090420230","fullName":"hai","sex":"NAM","birthDate":"Sep 23, 2000, 12:00:00 AM","homeTown":"hue","ciC":123123123123}
+{"id":"admin","fullName":"hai","sex":"NAM","birthDate":"Sep 23, 2000, 12:00:00 AM","homeTown":"hue","ciC":123123123123}
+{"id":"130420231","fullName":"hai","sex":"NAM","birthDate":"Dec 12, 12, 12:00:00 AM","homeTown":"hue","ciC":123456789123}

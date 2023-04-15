@@ -1,31 +1,104 @@
 package demoConsoleApp.Window;
 
+import demoConsoleApp.Core.*;
+import demoConsoleApp.Core.Data.DataAPI;
+import demoConsoleApp.Core.Data.SavingAccount;
 import demoConsoleApp.Core.Data.TermSavingAccount;
-import demoConsoleApp.Core.LoginSession;
+import demoConsoleApp.Main;
+import demoConsoleApp.Utility.Console.ActionResult;
+import demoConsoleApp.Utility.Console.Command;
 import demoConsoleApp.Utility.Console.ConsoleActionHandler;
 import demoConsoleApp.Utility.Console.ConsoleWindow;
 
+import java.io.Console;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class CreateSavingAccountWindow extends ConsoleWindow {
+public class CreateSavingAccountWindow extends ConsoleWindow implements IConfigObserver<InterestConfigRecord> {
 
+    ArrayList<Command> selectAccountType;
+    public CreateSavingAccountWindow(){
+        selectAccountType = new ArrayList<>();
+    }
     @Override
     public void onDraw() {
-        var balance  =  LoginSession.getInstance().getCurrentAccount().getDefaultAccount().getBalance();
-        if( balance.compareTo(new BigDecimal( "150000")) < 0){
-            System.out.println("So du phan lon hon hoac bang 150k ");
-            onDraw();
+        InterestConfig.getInstance().registered(this);
+        var type = handleSavingTerm();
+        if(type == 0){
+            InterestConfig.getInstance().unregistered(this);
+            Main.SwitchWindows(WindowType.AccountManager, null);
             return;
         }
-        System.out.println("So du cua ban la "+  balance);
-        var handle = new ConsoleActionHandler<>((e)->{
+       var balanceStr = handleInitalizeBalance();
+       if(balanceStr == null){
+           InterestConfig.getInstance().unregistered(this);
+           Main.SwitchWindows(WindowType.AccountManager, null);
+           return;
+       }
+       var balanace = new BigDecimal(balanceStr);
+       var newAccount = new TermSavingAccount(new Date(), type, LoginSession.getInstance().getNextSavingAccountID(),balanace);
+       var result= DataAPI.tryAddTermSavingAccount(newAccount);
+       if(!result.isSuccess){
+            System.out.println(result.message);
+            onDraw();
+            return;
+       }
+       InterestConfig.getInstance().unregistered(this);
+       Main.SwitchWindows(WindowType.AccountManager, null);
+    }
+
+    private int handleSavingTerm() {
+        isShowingRate = true;
+        var rcs = InterestConfig.getInstance().getRecords();
+        var rcIndex = rcs.stream().map(InterestConfigRecord::getID).toList();
+        for (var rc : rcs){
+            if(rc.getID() == 0)
+                continue;
+            System.out.println(rc);
+        }
+        var handle=new ConsoleActionHandler<>(Integer::parseInt, "Chon ky han.","exit",false);
+        var value =  handle.handle((e)->{
+            if(!rcIndex.contains(e))
+                return new ActionResult(false, "Khong tim thay lua chon!");
+            return new ActionResult(true,"");
+        });
+        isShowingRate = false;
+        if(value == null)
+            return 0;
+        return value;
+    }
+
+    private String handleInitalizeBalance(){
+        var handlerBalance = new ConsoleActionHandler<>(String::toUpperCase, "Nhap so du ban dau", "exit", false);
+        return handlerBalance.handle((value)->{
             try{
-                return new BigDecimal(e);
+                var balance = new BigDecimal(value);
+                if(balance.compareTo(new BigDecimal( 100000)) < 0){
+                    return new ActionResult(false, "So du phai la so >= 100k");
+                }
+                var mainBalance = LoginSession.getInstance().getCurrentAccount().getDefaultAccount().getBalance();
+                if(mainBalance.subtract(balance).compareTo(new BigDecimal(50000)) < 0){
+                    return new ActionResult(false, "So du con lai phai la so >= 50k");
+                }
+                return new ActionResult(true, null);
+            } catch (NumberFormatException e) {
+                return new ActionResult(false, "So du phai la so");
             }
-            catch (NumberFormatException exception){
-                throw new Exception("CCCD phải là 12 chữ số!");
+        });
+    }
+    boolean isShowingRate;
+    @Override
+    public void OnRefresh(List<InterestConfigRecord> rcs) {
+        if(isShowingRate){
+            for (var rc : rcs){
+                if(rc.getID() == 0)
+                    continue;
+                System.out.println(rc);
             }
-        }, "Nhap so tien ban muon gui co ky han", "", "exit", false);
-        var insertBalance = handle.handle(null);
+        }
     }
 }

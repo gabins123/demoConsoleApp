@@ -18,7 +18,7 @@ public class Account implements Cloneable{
         this.defaultAccount = defaultAccount;
         this.savingAccounts = savingAccounts;
     }
-    public Account(String username){
+    public Account(String username, String balance){
         this.username = username;
         var rand  = new Random();
         StringBuilder sb = new StringBuilder();
@@ -26,7 +26,7 @@ public class Account implements Cloneable{
             sb.append((int)(rand.nextDouble() * 9));
         }
         password = sb.toString();
-        defaultAccount = new SavingAccount(username, new BigDecimal("50000"));
+        defaultAccount = new SavingAccount(username, new BigDecimal(balance));
         savingAccounts = new ArrayList<>();
     }
     public String getUsername() {
@@ -60,7 +60,6 @@ public class Account implements Cloneable{
     public void setSavingAccounts(List<TermSavingAccount> savingAccounts) {
         this.savingAccounts = savingAccounts;
     }
-
     public Object clone() throws CloneNotSupportedException
     {
         var rs = (Account)super.clone();
@@ -68,6 +67,10 @@ public class Account implements Cloneable{
                 new String(e.getID()), e.getBalance())).collect(Collectors.toList());
         rs.defaultAccount = new SavingAccount(rs.username, rs.defaultAccount.getBalance());
         return rs;
+    }
+
+    public void addSavingAccount(TermSavingAccount savingAccount) {
+        savingAccounts.add(savingAccount);
     }
 }
 

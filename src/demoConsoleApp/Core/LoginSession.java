@@ -18,7 +18,12 @@ public class LoginSession {
         currentAccount = null;
     }
     public String getCurrentAccountID(){
+        if(currentAccount == null)
+            return null;
         return currentAccount.getUsername();
+    }
+    public String getNextSavingAccountID(){
+        return currentAccount.getUsername() + currentAccount.getSavingAccounts().size();
     }
     public Account getCurrentAccount(){
         try {

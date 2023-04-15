@@ -1,1 +1,2 @@
-{"username":"090420230","password":"314245","balance":50000,"savingAccounts":""}
+{"username":"admin","password":"admin","balance":86692340,"savingAccounts":"admin0-admin1-admin2"}
+{"username":"130420231","password":"524751","balance":50000,"savingAccounts":""}
