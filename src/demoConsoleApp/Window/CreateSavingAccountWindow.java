@@ -14,6 +14,7 @@ import java.io.Console;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,11 @@ public class CreateSavingAccountWindow extends ConsoleWindow implements IConfigO
            return;
        }
        var balanace = new BigDecimal(balanceStr);
-       var newAccount = new TermSavingAccount(new Date(), type, LoginSession.getInstance().getNextSavingAccountID(),balanace);
+       var calendar = Calendar.getInstance();
+        var rcInterest = InterestConfig.getInstance().getRecord(type);
+       var current = calendar.getTime();
+       calendar.add(rcInterest.getCalendarType(), rcInterest.getPeriod());
+       var newAccount = new TermSavingAccount(current,calendar.getTime() ,type, LoginSession.getInstance().getNextSavingAccountID(),balanace);
        var result= DataAPI.tryAddTermSavingAccount(newAccount);
        if(!result.isSuccess){
             System.out.println(result.message);

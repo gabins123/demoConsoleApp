@@ -63,7 +63,8 @@ public class Account implements Cloneable{
     public Object clone() throws CloneNotSupportedException
     {
         var rs = (Account)super.clone();
-        rs.savingAccounts = rs.savingAccounts.stream().map(e-> new TermSavingAccount((Date) e.getCreateDate().clone(),e.getAccountType(),
+        rs.savingAccounts = rs.savingAccounts.stream().map(e-> new TermSavingAccount((Date) e.getCreateDate().clone(),
+                (Date)e.getPaidDate().clone(),e.getAccountType(),
                 new String(e.getID()), e.getBalance())).collect(Collectors.toList());
         rs.defaultAccount = new SavingAccount(rs.username, rs.defaultAccount.getBalance());
         return rs;

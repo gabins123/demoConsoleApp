@@ -17,35 +17,25 @@ import java.util.Date;
 
 public class TermSavingAccount extends SavingAccount{
     private Date createDate;
+    private Date paidDate;
     private int accountType;
 
-    public TermSavingAccount( Date createDate , int accountType, String id, BigDecimal balance) {
+    public TermSavingAccount( Date createDate , Date paidDate , int accountType, String id, BigDecimal balance) {
         super(id, balance);
         this.createDate = createDate;
         this.accountType = accountType;
+        this.paidDate = paidDate;
     }
     public Date getCreateDate() {
         return createDate;
     }
-    public int getAccountType() {
-        return accountType;
-    }
+    public Date getPaidDate() { return paidDate; }
+    public int getAccountType() { return accountType; }
     @Override
     public BigDecimal calculateInterest(){
         var rcInterest = InterestConfig.getInstance().getRecord(accountType);
-        var calendar =Calendar.getInstance();
-        calendar.setTime(createDate);
-        calendar.add(rcInterest.getCalendarType(), rcInterest.getPeriod());
-        int diffInDays = (int)((calendar.getTime().getTime() - createDate.getTime())
+        int diffInDays = (int)((paidDate.getTime() - createDate.getTime())
                 / (1000 * 60 * 60 * 24));
-
         return balance.multiply(new BigDecimal(rcInterest.getRate() * diffInDays /365));
-    }
-    public Date getPaidTime(){
-        var rcInterest = InterestConfig.getInstance().getRecord(accountType);
-        var calendar =Calendar.getInstance();
-        calendar.setTime(createDate);
-        calendar.add(rcInterest.getCalendarType(), rcInterest.getPeriod());
-        return calendar.getTime();
     }
 }
