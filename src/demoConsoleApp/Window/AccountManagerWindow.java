@@ -42,7 +42,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                 onDraw();
                 return;
             }
-            var rs = DataAPI.depositAccount(LoginSession.getInstance().getCurrentAccountID(), new BigDecimal(amount));
+            var rs = DataAPI.withdrawAccount(LoginSession.getInstance().getCurrentAccountID(), new BigDecimal(amount));
             System.out.println(rs.message);
             onDraw();
         }));
