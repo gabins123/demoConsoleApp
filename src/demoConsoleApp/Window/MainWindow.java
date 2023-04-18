@@ -21,8 +21,9 @@ public class MainWindow extends ConsoleWindow {
         }));
         commands.add(new Command(3,"Tra cứu", () ->
         {
-            System.out.println("Handle tra cứu");
+            Main.SwitchWindows(WindowType.Searching, null);
         }));
+
     }
     @Override
     public void onDraw() {

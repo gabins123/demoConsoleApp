@@ -17,7 +17,7 @@ public class SavingAccount {
     }
     public String getID() {return id;}
     public BigDecimal getBalance() {return balance;}
-    public BigDecimal calculateInterest(){
+    public BigDecimal calculateInterest(boolean isFinish){
         return balance;
     }
 }

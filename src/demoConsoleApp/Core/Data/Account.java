@@ -1,5 +1,7 @@
 package demoConsoleApp.Core.Data;
 import com.google.gson.annotations.JsonAdapter;
+import demoConsoleApp.Utility.DateTimeUtility;
+import demoConsoleApp.Utility.StringUtility;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -64,14 +66,20 @@ public class Account implements Cloneable{
     {
         var rs = (Account)super.clone();
         rs.savingAccounts = rs.savingAccounts.stream().map(e-> new TermSavingAccount((Date) e.getCreateDate().clone(),
-                (Date)e.getPaidDate().clone(),e.getAccountType(),
+                (Date)e.getCreateDate().clone(),e.getAccountType(),
                 new String(e.getID()), e.getBalance())).collect(Collectors.toList());
         rs.defaultAccount = new SavingAccount(rs.username, rs.defaultAccount.getBalance());
         return rs;
     }
-
     public void addSavingAccount(TermSavingAccount savingAccount) {
         savingAccounts.add(savingAccount);
+    }
+    @Override
+    public String toString() {
+        var dots =  "...";
+        return String.format("\tTài khoản chính: \nUsername: %s\nBalance: %s\n",
+                StringUtility.HandleEmptyString(username, dots),
+                StringUtility.HandleEmptyString(StringUtility.toVND(defaultAccount.getBalance()), dots));
     }
 }
 
