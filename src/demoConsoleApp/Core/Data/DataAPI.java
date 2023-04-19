@@ -108,4 +108,14 @@ public class DataAPI {
         List<Customer> customerList = customers.stream().filter(e-> e.getFullName().equals(fullname)).collect(Collectors.toList());
         return customerList.stream().filter(customer -> customer.getId().equals(id)).findAny().orElse(null);
     }
+
+    public static ActionResult tryChancePassword(String accountID, String newPass) {
+        var account = getAccount(accountID);
+        if(account == null){
+            return new ActionResult(false,"Account ID khong ton tai");
+        }
+        account.setPassword(newPass);
+        api.set(DataPath.ACCOUNT_PATH, account,account.getUsername());
+        return new ActionResult(true,"Luu thanh cong");
+    }
 }

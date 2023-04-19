@@ -1,10 +1,7 @@
 package demoConsoleApp.Window;
 
-import demoConsoleApp.Core.Data.Account;
 import demoConsoleApp.Core.Data.DataAPI;
-import demoConsoleApp.Core.Data.SavingAccount;
 import demoConsoleApp.Core.Data.TermSavingAccount;
-import demoConsoleApp.Core.InterestConfigRecord;
 import demoConsoleApp.Core.LoginSession;
 import demoConsoleApp.Main;
 import demoConsoleApp.Utility.Console.ActionResult;
@@ -13,6 +10,7 @@ import demoConsoleApp.Utility.Console.ConsoleActionHandler;
 import demoConsoleApp.Utility.Console.ConsoleWindow;
 import demoConsoleApp.Utility.StringUtility;
 
+import java.io.Console;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -46,7 +44,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                 return;
             }
             var rs = DataAPI.withdrawAccount(LoginSession.getInstance().getCurrentAccountID(), new BigDecimal(amount));
-            System.out.println(rs.message);
+            System.out.println(rs.getMessage());
             onDraw();
         }));
         commands.add(new Command(3,"Nap tien", () ->
@@ -57,7 +55,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                return;
             }
             var rs = DataAPI.depositAccount(LoginSession.getInstance().getCurrentAccountID(), new BigDecimal(amount));
-            System.out.println(rs.message);
+            System.out.println(rs.getMessage());
             onDraw();
         }));
         commands.add(new Command(5,"Tra cuu lai xuat", () ->
@@ -70,7 +68,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                 if(_account == null){
                     return new ActionResult(false, String.format("Khong the tim thay tai khoan tiet kiem co id %s trong tai khoan cua ban. vui long nhap id khac",e));
                 }
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             });
             if( id == null)
             {
@@ -92,7 +90,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                 if(_account == null){
                     return new ActionResult(false, String.format("Khong the tim thay tai khoan tiet kiem co id %s trong tai khoan cua ban. vui long nhap id khac",e));
                 }
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             });
             if( id == null)
             {
@@ -107,11 +105,36 @@ public class AccountManagerWindow extends ConsoleWindow {
             if(savingAccount != null){
                 var balance = savingAccount.getBalance();
                 var rsWithdraw = DataAPI.withdrawSavingAccount(savingAccount.getID(), mainAccount);
-                System.out.println(rsWithdraw.message);
+                System.out.println(rsWithdraw.getMessage());
                 var rsDepositSavingBalance = DataAPI.depositAccount(LoginSession.getInstance().getCurrentAccountID(), balance.add(savingAccount.calculateInterest(savingAccount.getPaidTime().compareTo(new Date()) <= 0)));
-                System.out.println(rsDepositSavingBalance.message);
+                System.out.println(rsDepositSavingBalance.getMessage());
                 onDraw();
             }//xu li xoa tai khoan khi rut
+        }));
+        commands.add(new Command(7,"Doi mat khau", () ->
+        {
+            var handler = new ConsoleActionHandler<>(e->e, "Nhap lai mat khau", "exit", false);
+            var id = handler.handle(e-> {
+                var password = LoginSession.getInstance().getCurrentAccount().getPassword();
+                if(!password.equals(e)){
+                    return new ActionResult(false, "Mat khau sai");
+                }
+                return ActionResult.valid();
+            });
+            if(id == null)
+            {
+                onDraw();
+                return;
+            }
+            id = handler.handle(e-> {
+                if(e.length() < 6){
+                    return new ActionResult(false, "Mat khau phai lon hon 6 ky tu!");
+                }
+                return ActionResult.valid();
+            }, "Mat khau moi");
+            var trySave = DataAPI.tryChancePassword(LoginSession.getInstance().getCurrentAccountID(), id);
+            System.out.println(trySave.getMessage());
+            onDraw();
         }));
         commands.sort(Comparator.comparingInt(Command::getIndex));
     }
@@ -123,7 +146,7 @@ public class AccountManagerWindow extends ConsoleWindow {
                 if(mainBalance.subtract(balance).compareTo(new BigDecimal(50000)) < 0){
                     return new ActionResult(false, "So du con lai phai la so >= 50k");
                 }
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             } catch (NumberFormatException e) {
                 return new ActionResult(false, "So du phai la so");
             }
@@ -133,7 +156,7 @@ public class AccountManagerWindow extends ConsoleWindow {
         var handlerBalance = new ConsoleActionHandler<>((e)->e, "Nhap so tien muon nap", "exit", false);
         return handlerBalance.handle((balance)->{
             try {
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             }catch (NumberFormatException e) {
                 return new ActionResult(false, "Phai la so");
             }

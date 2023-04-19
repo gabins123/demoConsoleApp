@@ -76,16 +76,16 @@ public class CreateCustomerWindow extends ConsoleWindow {
                 //TODO: Do something
             }
             else {
-                System.out.println("Đăng ký thành công!");
                 var account =new Account(customer.getId(),handleInitalizeBalance());
                 DataAPI.tryAddAccount(account);
+                System.out.printf("Đăng ký thành công!\nDang nhap voi tai khoan nhu sau:\nUsername: %s\nMat khau: %s\n", account.getUsername(), account.getPassword());
                 LoginSession.getInstance().SignIn(account);
                 Main.SwitchWindows(WindowType.AccountManager, null);
             }
             Main.SwitchWindows(WindowType.Home, null);
         }
         else{
-            System.out.println("Đăng ký không1 thành công!");
+            System.out.println("Đăng ký không thành công!");
             Main.SwitchWindows(WindowType.Home, null);
         }
     }
@@ -105,7 +105,7 @@ public class CreateCustomerWindow extends ConsoleWindow {
                 if(balance.compareTo(new BigDecimal( 50000)) < 0){
                     return new ActionResult(false, "So du phai la so >= 50000");
                 }
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             } catch (NumberFormatException e) {
                 return new ActionResult(false, "So du phai la so");
             }

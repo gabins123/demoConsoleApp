@@ -47,8 +47,8 @@ public class CreateSavingAccountWindow extends ConsoleWindow implements IConfigO
        calendar.add(rcInterest.getCalendarType(), rcInterest.getPeriod());
        var newAccount = new TermSavingAccount(current,calendar.getTime() ,type, LoginSession.getInstance().getNextSavingAccountID(),balanace);
        var result= DataAPI.tryAddTermSavingAccount(newAccount);
-       if(!result.isSuccess){
-            System.out.println(result.message);
+       if(!result.isSuccess()){
+            System.out.println(result.getMessage());
             onDraw();
             return;
        }
@@ -89,7 +89,7 @@ public class CreateSavingAccountWindow extends ConsoleWindow implements IConfigO
                 if(mainBalance.subtract(balance).compareTo(new BigDecimal(50000)) < 0){
                     return new ActionResult(false, "So du con lai phai la so >= 50k");
                 }
-                return new ActionResult(true, null);
+                return ActionResult.valid();
             } catch (NumberFormatException e) {
                 return new ActionResult(false, "So du phai la so");
             }
