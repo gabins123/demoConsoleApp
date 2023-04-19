@@ -1,7 +1,9 @@
 package demoConsoleApp.Window;
 
+import demoConsoleApp.Core.Data.Account;
 import demoConsoleApp.Core.Data.DataAPI;
 import demoConsoleApp.Core.Data.SavingAccount;
+import demoConsoleApp.Core.Data.TermSavingAccount;
 import demoConsoleApp.Core.InterestConfigRecord;
 import demoConsoleApp.Core.LoginSession;
 import demoConsoleApp.Main;
@@ -14,6 +16,7 @@ import demoConsoleApp.Utility.StringUtility;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 public class AccountManagerWindow extends ConsoleWindow {
     private final ArrayList<Command> commands;
@@ -60,7 +63,7 @@ public class AccountManagerWindow extends ConsoleWindow {
         commands.add(new Command(5,"Tra cuu lai xuat", () ->
         {
             var handler = new ConsoleActionHandler<>(e->e, "Nhap tai khoan muon tra cuu", "exit", false);
-            SavingAccount account =null;
+            TermSavingAccount account =null;
             var id = handler.handle(e-> {
                 var accounts = LoginSession.getInstance().getCurrentAccount().getSavingAccounts();
                 var _account = accounts.stream().filter(a->a.getID().equals(e)).findAny().orElse(null);
@@ -76,8 +79,39 @@ public class AccountManagerWindow extends ConsoleWindow {
             }
             var accounts = LoginSession.getInstance().getCurrentAccount().getSavingAccounts();
             account = accounts.stream().filter(a->a.getID().equals(id)).findAny().orElse(null);
-            System.out.println("Lai nhan duoc: " +StringUtility.toVND(account.calculateInterest()));
+            System.out.println("Lai nhan duoc: " +StringUtility.toVND(account.calculateInterest(account.getPaidTime().compareTo(new Date()) <=0)));
             onDraw();
+        }));
+        commands.add(new Command(6,"Rut tien tai khoan co ky han", () ->
+        {
+            var handler = new ConsoleActionHandler<>(e->e, "Nhap tai khoan muon rut", "exit", false);
+            TermSavingAccount savingAccount =null;
+            var id = handler.handle(e-> {
+                var accounts = LoginSession.getInstance().getCurrentAccount().getSavingAccounts();
+                var _account = accounts.stream().filter(a->a.getID().equals(e)).findAny().orElse(null);
+                if(_account == null){
+                    return new ActionResult(false, String.format("Khong the tim thay tai khoan tiet kiem co id %s trong tai khoan cua ban. vui long nhap id khac",e));
+                }
+                return new ActionResult(true, null);
+            });
+            if( id == null)
+            {
+                onDraw();
+                return;
+            }
+            var accounts = LoginSession.getInstance().getCurrentAccount().getSavingAccounts();
+            var mainAccount = LoginSession.getInstance().getCurrentAccount();
+
+            savingAccount = accounts.stream().filter(a->a.getID().equals(id)).findAny().orElse(null);
+
+            if(savingAccount != null){
+                var balance = savingAccount.getBalance();
+                var rsWithdraw = DataAPI.withdrawSavingAccount(savingAccount.getID(), mainAccount);
+                System.out.println(rsWithdraw.message);
+                var rsDepositSavingBalance = DataAPI.depositAccount(LoginSession.getInstance().getCurrentAccountID(), balance.add(savingAccount.calculateInterest(savingAccount.getPaidTime().compareTo(new Date()) <= 0)));
+                System.out.println(rsDepositSavingBalance.message);
+                onDraw();
+            }//xu li xoa tai khoan khi rut
         }));
         commands.sort(Comparator.comparingInt(Command::getIndex));
     }
@@ -103,7 +137,6 @@ public class AccountManagerWindow extends ConsoleWindow {
             }catch (NumberFormatException e) {
                 return new ActionResult(false, "Phai la so");
             }
-
         });
     }
     @Override

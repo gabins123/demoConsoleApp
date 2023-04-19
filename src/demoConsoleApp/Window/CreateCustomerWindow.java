@@ -96,7 +96,6 @@ public class CreateCustomerWindow extends ConsoleWindow {
     private String handleSex(){
         var handler = new ConsoleActionHandler<>(String::toUpperCase, "Nhập giới tính của bạn? (Nam hoặc nữ)", "exit", false);
         return handler.handle((e)-> new ActionResult(e.equalsIgnoreCase("nam") || e.equalsIgnoreCase("nữ"),"Giới tính phải là nam hoặc nữ"));
-
     }
     private String handleInitalizeBalance(){
         var handlerBalance = new ConsoleActionHandler<>(String::toUpperCase, "Nhap so du ban dau (>= 50000)", "exit", false);
