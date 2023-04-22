@@ -37,7 +37,7 @@ public class SearchingWindow  extends ConsoleWindow{
             }
 
             System.out.println(customer.toString());
-
+            onDraw();
         }));
         commandSearch.add(new Command(2,"Tra cứu danh sách tài khoản của một khách hàng theo mã số khách hàng", () ->
         {
@@ -50,11 +50,11 @@ public class SearchingWindow  extends ConsoleWindow{
             }
 
             Account account = DataAPI.getAccount(customer.getId());
-            System.out.println(account.toString());
+            System.out.println(account.infoAccountToString());
             System.out.println("=====================================");
             List<TermSavingAccount> savingAccounts = account.getSavingAccounts();
             System.out.println("\n\tTài khoản có kỳ hạn:");
-            savingAccounts.stream().forEach(termSavingAccount -> System.out.println(termSavingAccount.toString()+"\n"));
+            savingAccounts.stream().forEach(termSavingAccount -> System.out.println(termSavingAccount.savingAccountToString()+"\n"));
 
             onDraw();
         }));

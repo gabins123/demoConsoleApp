@@ -32,10 +32,10 @@ public class ConsoleActionHandler<T> {
                     return value;
                 }
                 var valid = validation.invoke(value);
-                if(valid.isSuccess){
+                if(valid.isSuccess()){
                     return value;
                 }
-                System.out.println(valid.message);
+                System.out.println(valid.getMessage());
             }
             catch(Exception e) {
                 System.out.println(e.getMessage());
@@ -58,10 +58,10 @@ public class ConsoleActionHandler<T> {
                     return value;
                 }
                 var valid = validation.invoke(value);
-                if(valid.isSuccess){
+                if(valid.isSuccess()){
                     return value;
                 }
-                System.out.println(valid.message);
+                System.out.println(valid.getMessage());
             }
             catch(Exception e) {
                 System.out.println(e.getMessage());

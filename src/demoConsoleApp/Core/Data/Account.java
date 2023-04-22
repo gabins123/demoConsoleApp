@@ -74,12 +74,22 @@ public class Account implements Cloneable{
     public void addSavingAccount(TermSavingAccount savingAccount) {
         savingAccounts.add(savingAccount);
     }
-    @Override
-    public String toString() {
+
+    public String infoAccountToString() {
         var dots =  "...";
         return String.format("\tTài khoản chính: \nUsername: %s\nBalance: %s\n",
                 StringUtility.HandleEmptyString(username, dots),
                 StringUtility.HandleEmptyString(StringUtility.toVND(defaultAccount.getBalance()), dots));
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", defaultAccount=" + defaultAccount +
+                ", savingAccounts=" + savingAccounts +
+                '}';
     }
 }
 

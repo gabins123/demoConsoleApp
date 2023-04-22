@@ -41,6 +41,7 @@ public class TermSavingAccount extends SavingAccount{
                 / (1000 * 60 * 60 * 24));
         return balance.multiply(new BigDecimal(rcInterest.getRate() * diffInDays /365));
     }
+
     public Date getPaidTime(){
         var rcInterest = InterestConfig.getInstance().getRecord(accountType);
         var calendar =Calendar.getInstance();
@@ -49,13 +50,20 @@ public class TermSavingAccount extends SavingAccount{
         return calendar.getTime();
     }
 
-    @Override
-    public String toString() {
+    public String savingAccountToString() {
         var dots =  "...";
         return String.format("\nUsername: %s\nBalance: %s\nPaid date: %s\nInterest: %s",
                 StringUtility.HandleEmptyString(getID(), dots),
                 StringUtility.HandleEmptyString(StringUtility.toVND(getBalance()), dots),
                 StringUtility.HandleEmptyString(DateTimeUtility.toDefaultFormat(getPaidTime()), dots),
                 StringUtility.HandleEmptyString(StringUtility.toVND(calculateInterest(getPaidTime().compareTo(new Date()) <= 0)), dots));
+    }
+
+    @Override
+    public String toString() {
+        return "TermSavingAccount{" +
+                "createDate=" + createDate +
+                ", accountType=" + accountType +
+                '}';
     }
 }

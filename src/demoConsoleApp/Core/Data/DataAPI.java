@@ -76,6 +76,12 @@ public class DataAPI {
         api.set(DataPath.ACCOUNT_PATH, account,account.getUsername());
         return new ActionResult(true,"Nap tien thanh cong!! So du con lai: " + StringUtility.toVND(account.getDefaultAccount().getBalance()));
     }
+    public static ActionResult depositAccount(Account account, BigDecimal amount){
+
+        account.getDefaultAccount().deposit(amount);
+        api.set(DataPath.ACCOUNT_PATH, account,account.getUsername());
+        return new ActionResult(true,"Nap tien thanh cong!! So du con lai: " + StringUtility.toVND(account.getDefaultAccount().getBalance()));
+    }
     public static ActionResult withdrawAccount(String accountID, BigDecimal amount){
         var account = getAccount(accountID);
         if(account == null){
@@ -93,9 +99,21 @@ public class DataAPI {
 
         accountSaving.withdraw(accountSaving.getBalance());
 
-        api.set(DataPath.SAVING_ACCOUNT_PATH, accountSaving,accountSaving.getID());
+        for(TermSavingAccount savingAccount : account.getSavingAccounts()){
+            if(savingAccount.getID().equals(accountSaving.getID())){
+                account.getSavingAccounts().remove(savingAccount);
+                break;
+            }
+        }
 
-        return new ActionResult(true,"Rut tien tai khoan ky han thanh cong!!" + "\nBalance saving: " + StringUtility.toVND(accountSaving.getBalance()) + "\nBalance main: "+ StringUtility.toVND(account.getDefaultAccount().getBalance()) + "\nNgay dao han:" + DateTimeUtility.toDefaultFormat(accountSaving.getPaidTime()));
+        String balanceSaving = StringUtility.toVND(accountSaving.getBalance());
+        String balanceMain = StringUtility.toVND(account.getDefaultAccount().getBalance());
+        String date = DateTimeUtility.toDefaultFormat(accountSaving.getPaidTime());
+
+        api.set(DataPath.ACCOUNT_PATH, account, accountSavingID);
+        api.delete(DataPath.SAVING_ACCOUNT_PATH, accountSavingID);
+
+        return new ActionResult(true,"Rut tien tai khoan ky han thanh cong!!" + "\nBalance saving: " + balanceSaving + "\nBalance main: "+ balanceMain + "\nNgay dao han:" + date);
     }
     public static boolean tryAddAccount(Account account){
         if (accounts.stream().anyMatch(e-> e.getUsername().equals(account.getUsername()))){
@@ -104,8 +122,19 @@ public class DataAPI {
         }
         return api.set(DataPath.ACCOUNT_PATH, account);
     }
+
     public static Customer getCustomerByFullnameAndCustomerId(String fullname, String id){
         List<Customer> customerList = customers.stream().filter(e-> e.getFullName().equals(fullname)).collect(Collectors.toList());
         return customerList.stream().filter(customer -> customer.getId().equals(id)).findAny().orElse(null);
+    }
+
+    public static ActionResult tryChancePassword(String accountID, String newPass) {
+        var account = getAccount(accountID);
+        if(account == null){
+            return new ActionResult(false,"Account ID khong ton tai");
+        }
+        account.setPassword(newPass);
+        api.set(DataPath.ACCOUNT_PATH, account,account.getUsername());
+        return new ActionResult(true,"Luu thanh cong");
     }
 }

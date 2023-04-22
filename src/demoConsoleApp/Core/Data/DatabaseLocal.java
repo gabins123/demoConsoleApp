@@ -41,4 +41,16 @@ public class DatabaseLocal {
             return false;
         }
     }
+
+    public <T> boolean delete(String path, String key )
+    {
+        var saver = new DataSaver<T>();
+        try {
+            saver.delete(path,key);
+            return true;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
 }
