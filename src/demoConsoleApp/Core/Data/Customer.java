@@ -25,7 +25,7 @@ public class Customer {
         var date = new SimpleDateFormat(pattern);
 
         //TODO: Them so thu tu
-        id = date.format(new Date()) + order;
+        id = date.format(new Date()) + String.format("%04d",order);
     }
     public void setFullName(String value) { fullName = value;}
     public void setSex(String value) { sex = value;}
