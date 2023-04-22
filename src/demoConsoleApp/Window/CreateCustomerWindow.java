@@ -16,7 +16,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 
-public class CreateCustomerWindow extends ConsoleWindow {
+public class
+        CreateCustomerWindow extends ConsoleWindow {
 
     public CreateCustomerWindow() {
     }

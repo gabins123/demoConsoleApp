@@ -97,23 +97,21 @@ public class AccountManagerWindow extends ConsoleWindow {
                 onDraw();
                 return;
             }
-            var accounts = LoginSession.getInstance().getCurrentAccount().getSavingAccounts();
-            var mainAccount = LoginSession.getInstance().getCurrentAccount();
+            var mainAccount = DataAPI.getAccount(LoginSession.getInstance().getCurrentAccount().getUsername());
+            var accounts = mainAccount.getSavingAccounts();
 
             savingAccount = accounts.stream().filter(a->a.getID().equals(id)).findAny().orElse(null);
 
             if(savingAccount != null){
                 var balance = savingAccount.getBalance();
                 var rsWithdraw = DataAPI.withdrawSavingAccount(savingAccount.getID(), mainAccount);
-                System.out.println(rsWithdraw.getMessage());
-                var rsDepositSavingBalance = DataAPI.depositAccount(LoginSession.getInstance().getCurrentAccountID(), balance.add(savingAccount.calculateInterest(savingAccount.getPaidTime().compareTo(new Date()) <= 0)));
-                System.out.println(rsDepositSavingBalance.getMessage());
+                var rsDepositSavingBalance = DataAPI.depositAccount(mainAccount, balance.add(savingAccount.calculateInterest(savingAccount.getPaidTime().compareTo(new Date()) <= 0)));
                 onDraw();
             }//xu li xoa tai khoan khi rut
         }));
         commands.add(new Command(7,"Doi mat khau", () ->
         {
-            var handler = new ConsoleActionHandler<>(e->e, "Nhap lai mat khau", "exit", false);
+            var handler = new ConsoleActionHandler<>(e->e, "Nhap lai mat khau cu", "exit", false);
             var id = handler.handle(e-> {
                 var password = LoginSession.getInstance().getCurrentAccount().getPassword();
                 if(!password.equals(e)){

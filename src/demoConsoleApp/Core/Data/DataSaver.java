@@ -8,10 +8,11 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class DataSaver<T> {
     public void save(String file, T customer) throws IOException {
         Gson g = new Gson();
-        var data =g.toJson(customer);
+        var data = g.toJson(customer);
         File fileOutput = new File(file);
         FileWriter fileWriter = new FileWriter(fileOutput, true);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -20,7 +21,7 @@ public class DataSaver<T> {
     }
     public void edit(String file, T customer, String key) throws IOException {
         Gson g = new Gson();
-        var data =g.toJson(customer);
+        var data = g.toJson(customer);
         BufferedReader fileReder = new BufferedReader(new FileReader(file));
         StringBuffer inputBuffer = new StringBuffer();
         String line;
@@ -33,12 +34,31 @@ public class DataSaver<T> {
             }
             inputBuffer.append(line).append('\n');
         }
-        if(!isFounded)
+        fileReder.close();
+        if(!isFounded){
             inputBuffer.append(data).append('\n');
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(file);
+        fileOut.write(inputBuffer.toString().getBytes());
+        fileOut.close();
+    }
+    public void delete(String file, String key) throws IOException {
+        BufferedReader fileReder = new BufferedReader(new FileReader(file));
+        StringBuffer inputBuffer = new StringBuffer();
+        String line;
+        while ((line = fileReder.readLine()) != null) {
+            if(!line.contains(key) && !line.equals("")){
+                inputBuffer.append(line).append('\n');;
+            }
+        }
         fileReder.close();
 
         FileOutputStream fileOut = new FileOutputStream(file);
         fileOut.write(inputBuffer.toString().getBytes());
         fileOut.close();
+    }
+    public static void main(String[] args) {
+
     }
 }
