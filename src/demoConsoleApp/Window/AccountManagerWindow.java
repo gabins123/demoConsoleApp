@@ -106,7 +106,6 @@ public class AccountManagerWindow extends ConsoleWindow {
                 var balance = savingAccount.getBalance();
                 var rsWithdraw = DataAPI.withdrawSavingAccount(savingAccount.getID(), mainAccount);
                 var rsDepositSavingBalance = DataAPI.depositAccount(mainAccount, balance.add(savingAccount.calculateInterest(savingAccount.getPaidTime().compareTo(new Date()) <= 0)));
-                System.out.println(rsDepositSavingBalance.getMessage());
                 onDraw();
             }//xu li xoa tai khoan khi rut
         }));
